@@ -1,9 +1,11 @@
 # ClusterCore
 
 一个基于Redis的WaterdogPE群组服核心插件，使用AI辅助完成，支持跨服传送和服务器管理功能。
+
 得益于Redis，ClusterCore能够支撑起大型群组服务器，一服一端或者一服多端都不在话下！
 目前只支持Nukkit-MOT，其他平台请自行实现。
-Ps: 如果是一服一端的设计，那么你需要调用ClusterAPI.setServerOpen(true)来控制服务器的开关状态，保证房间只在等待状态时允许加入。
+
+Ps: 如果是一服一端的设计，那么你需要使用setServerOpen(true)来控制服务器的开关状态，保证房间只在等待状态时允许加入。
 
 ## 🌟 项目简介
 
