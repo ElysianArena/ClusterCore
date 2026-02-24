@@ -1,0 +1,18 @@
+# 服务器设置
+server:
+  # 分组ID（用于同一类型的服务器分组）
+  groupId: "lobby"
+  # 服务器唯一标识
+  wdpeId: "lobby-1"
+  # 服务器显示名称
+  displayName: "主大厅"
+  # 最大玩家数
+  maxPlayers: 100
+
+redis:
+  # Redis服务器地址
+  host: localhost
+  # Redis服务器端口
+  port: 6379
+  # Redis密码（如果没有密码留空）
+  password: ""

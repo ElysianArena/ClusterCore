@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.ElysianArena</groupId>
+    <artifactId>ClusterCore</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>nukkit-mot</module>
+        <module>waterdogpe</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>repo-lanink-cn</id>
+            <url>https://repo.lanink.cn/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <nukkit.version>1.0-SNAPSHOT</nukkit.version>
+        <waterdogpe.version>1.2.3-SNAPSHOT</waterdogpe.version>
+        <jedis.version>5.1.0</jedis.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

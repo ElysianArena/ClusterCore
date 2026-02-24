@@ -1,0 +1,77 @@
+# 插件启动相关
+plugin:
+  loading: "&a[ClusterCore] &e正在启动..."
+  loaded: "&a[ClusterCore] &aNukkit-MOT 模块已加载"
+  disabling: "&a[ClusterCore] &eNukkit-MOT 模块正在关闭"
+
+# Redis相关
+redis:
+  connection_failed: "&a[ClusterCore] &cRedis连接失败！"
+  connected: "&a[ClusterCore] &aRedis连接成功: {host}:{port}"
+  registered: "&a[ClusterCore] &a成功注册到Redis"
+
+# 配置信息
+config:
+  info: "&a[ClusterCore] &egroupId: {groupId}, wdpeId: {wdpeId}"
+
+# 命令相关
+commands:
+  registered: "&a[ClusterCore] &a命令已注册: &b/wdt&f, &b/hub"
+
+# Hub命令消息
+hub:
+  player_only: "&c此命令只能由玩家执行"
+  teleport_spawn: "&a已传送回出生点"
+  teleporting_lobby: "&e正在寻找可用的大厅服务器..."
+  no_lobby_found: "&c无法找到可用的大厅服务器，请稍后再试"
+
+# WDT命令消息
+wdt:
+  player_only: "&c此命令只能由玩家执行"
+  usage: "&e用法: &b/wdt <groupId>"
+  description: "&e查询并传送到指定分组的可用子服"
+  query_error: "&c查询服务器信息时发生错误: {error}"
+  connection_failed: "&c无法连接到群组管理系统"
+  no_servers: "&c分组 {groupId} 中没有可用的服务器"
+  server_list_header: "&a=== 分组 {groupId} 可用服务器 ==="
+  server_format: "&b- {wdpeId} &7({current}/{max}) {status}"
+  query_failed: "&c查询失败: {message}"
+  process_error: "&c处理服务器信息时发生错误: {error}"
+  exception: "&c查询服务器信息失败: {error}"
+
+# 服务器状态
+server:
+  open: "&a[开放]"
+  closed: "&c[关闭]"
+
+# 服务器关闭相关
+shutdown:
+  initiating: "&a[ClusterCore] &e开始处理服务器关闭..."
+  title: "&c&l服务器即将关闭"
+  subtitle: "&r正在传送至大厅..."
+  transferring_players: "&a[ClusterCore] &e正在传送玩家至大厅服务器..."
+  transfer_message: "&a正在传送至大厅服务器..."
+  transfer_failed: "&c传送玩家 {player} 失败: {error}"
+  kick_message: "&c服务器关闭\n&e传送失败，请联系管理员"
+  completed: "&a[ClusterCore] &a服务器关闭处理完成"
+
+# 传送相关消息
+transfer:
+  sending_to_server: "&a正在将你传送到 {serverName}..."
+  
+# 错误消息
+error:
+  no_target_servers: "&c没有可用的目标服务器"
+  transfer_failed: "&c传送失败"
+  no_lobby_servers: "&c没有可用的大厅服务器"
+  transfer_to_lobby_failed: "&c传送至大厅失败"
+  invalid_server_address: "&c传送失败：无效的服务器地址"
+  invalid_port: "&c传送失败：无效的端口号"
+
+# 调试消息（仅OP可见）
+debug:
+  transfer_packet_sent: "&7[调试] 已发送传送包到 {server}"
+  no_available_servers: "&c[调试] 查询到的服务器数量为0"
+  transfer_failed_detail: "&c[错误详情] {error}"
+  invalid_address_format: "&c[调试] 服务器地址格式错误: {address}"
+  port_parse_failed: "&c[调试] 端口号解析失败: {port}"

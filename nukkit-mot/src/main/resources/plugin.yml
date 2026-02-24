@@ -1,0 +1,5 @@
+name: ClusterCore
+main: cn.ElysianArena.ClusterCore.Nukkit.Main
+version: 1.0-SNAPSHOT
+api: [1.0.0]
+author: NemoCat
