@@ -8,6 +8,8 @@ server:
   displayName: "主大厅"
   # 最大玩家数
   maxPlayers: 100
+  # 是否是大厅服务器
+  isLobby: true
 
 redis:
   # Redis服务器地址
