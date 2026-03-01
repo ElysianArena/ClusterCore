@@ -72,6 +72,14 @@ public interface ClusterAPI {
     CompletableFuture<Boolean> transferToLobby(Player player);
 
     /**
+     * 传送玩家到其他可用的大厅服务器（排除当前服务器）
+     * 用于大厅服务器关闭时，将玩家传送到其他可用大厅
+     * @param player 玩家
+     * @return 异步返回是否成功传送
+     */
+    CompletableFuture<Boolean> transferToOtherLobby(Player player);
+
+    /**
      * 获取指定服务器的显示名称
      * @param wdpeId 服务器ID
      * @return 服务器显示名称

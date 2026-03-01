@@ -223,4 +223,39 @@ public class RedisClusterAPI implements ClusterAPI {
             }
         });
     }
+
+    @Override
+    public CompletableFuture<Boolean> transferToOtherLobby(Player player) {
+        if (player == null || !player.isOnline()) {
+            return CompletableFuture.completedFuture(false);
+        }
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                // 查询其他可用的大厅服务器（排除当前服务器）
+                JsonObject lobbyServers = redisClient.queryAvailableServersExcluding("lobby", currentWdpeId);
+
+                if (lobbyServers.get("count").getAsInt() == 0) {
+                    player.sendMessage(langManager.getMessage("error.no_other_lobby_servers"));
+                    String debugMsg = langManager.getOpMessage(player, "debug.no_available_servers");
+                    if (!debugMsg.isEmpty()) {
+                        player.sendMessage(debugMsg);
+                    }
+                    return false;
+                }
+
+                JsonObject targetServer = lobbyServers.get("server_0").getAsJsonObject();
+                String wdpeId = targetServer.get("wdpeId").getAsString();
+                return transferToServer(player, wdpeId);
+            } catch (Exception e) {
+                Server.getInstance().getLogger().error("[ClusterCore] 传送至其他大厅失败", e);
+                player.sendMessage(langManager.getMessage("error.transfer_to_lobby_failed"));
+                String errorMsg = langManager.getOpMessage(player, "debug.transfer_failed_detail", "error", e.getMessage());
+                if (!errorMsg.isEmpty()) {
+                    player.sendMessage(errorMsg);
+                }
+                return false;
+            }
+        });
+    }
 }

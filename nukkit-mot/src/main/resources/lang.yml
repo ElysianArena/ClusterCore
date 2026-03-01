@@ -64,6 +64,7 @@ error:
   no_target_servers: "&c没有可用的目标服务器"
   transfer_failed: "&c传送失败"
   no_lobby_servers: "&c没有可用的大厅服务器"
+  no_other_lobby_servers: "&c没有其他可用的大厅服务器"
   transfer_to_lobby_failed: "&c传送至大厅失败"
   invalid_server_address: "&c传送失败：无效的服务器地址"
   invalid_port: "&c传送失败：无效的端口号"

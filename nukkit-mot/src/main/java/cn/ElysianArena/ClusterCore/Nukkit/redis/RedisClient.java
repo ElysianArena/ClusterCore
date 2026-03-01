@@ -8,7 +8,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
 
-import java.time.Duration;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -37,7 +37,7 @@ public class RedisClient {
         poolConfig.setMinIdle(5);
         poolConfig.setTestOnBorrow(true);
         poolConfig.setTestWhileIdle(true);
-        poolConfig.setMaxWait(Duration.ofSeconds(2));
+        poolConfig.setMaxWaitMillis(2000);
 
         if (password != null && !password.isEmpty()) {
             this.jedisPool = new JedisPool(poolConfig, host, port, 2000, password);
@@ -115,6 +115,37 @@ public class RedisClient {
                 JsonObject serverInfo = gson.fromJson(entry.getValue(), JsonObject.class);
                 if (groupId.equals(serverInfo.get("groupId").getAsString()) &&
                         serverInfo.get("online").getAsBoolean()) {
+                    result.add("server_" + count, serverInfo);
+                    count++;
+                }
+            }
+
+            result.addProperty("count", count);
+            return result;
+        }
+    }
+
+    /**
+     * 查询指定分组下可用的服务器，排除指定的服务器
+     * @param groupId 分组ID
+     * @param excludeWdpeId 要排除的服务器ID
+     * @return 可用服务器列表
+     */
+    public JsonObject queryAvailableServersExcluding(String groupId, String excludeWdpeId) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            var allServers = jedis.hgetAll(SERVER_REGISTRY_KEY);
+            JsonObject result = new JsonObject();
+            int count = 0;
+
+            for (var entry : allServers.entrySet()) {
+                JsonObject serverInfo = gson.fromJson(entry.getValue(), JsonObject.class);
+                String wdpeId = serverInfo.get("wdpeId").getAsString();
+
+                // 排除指定服务器，且必须是同分组、在线、开放的服务器
+                if (!wdpeId.equals(excludeWdpeId) &&
+                        groupId.equals(serverInfo.get("groupId").getAsString()) &&
+                        serverInfo.get("online").getAsBoolean() &&
+                        serverInfo.has("open") && serverInfo.get("open").getAsBoolean()) {
                     result.add("server_" + count, serverInfo);
                     count++;
                 }

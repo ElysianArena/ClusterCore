@@ -35,16 +35,18 @@ public class EventListener implements Listener {
     /**
      * 处理服务器关闭事件
      * 将所有在线玩家传送到大厅服务器
+     * 如果当前服务器是大厅，则尝试传送到其他可用大厅
      */
     @EventHandler
     public void onServerStop(ServerStopEvent event) {
         Server server = plugin.getServer();
         Map<UUID, Player> onlinePlayers = server.getOnlinePlayers();
 
-        if (plugin.getNukkitConfig().isLobby() || onlinePlayers.isEmpty()) {
+        if (onlinePlayers.isEmpty()) {
             return;
         }
 
+        boolean isLobby = plugin.getNukkitConfig().isLobby();
         plugin.getLogger().info(langManager.getMessage("shutdown.initiating"));
         String title = langManager.getMessage("shutdown.title");
         String subtitle = langManager.getMessage("shutdown.subtitle");
@@ -63,7 +65,16 @@ public class EventListener implements Listener {
         plugin.getLogger().info(langManager.getMessage("shutdown.transferring_players"));
         for (Player player : onlinePlayers.values()) {
             try {
-                CompletableFuture<Boolean> transferFuture = api.transferToLobby(player);
+                CompletableFuture<Boolean> transferFuture;
+
+                if (isLobby) {
+                    // 当前服务器是大厅，尝试传送到其他可用大厅
+                    transferFuture = api.transferToOtherLobby(player);
+                } else {
+                    // 当前服务器不是大厅，传送到任意大厅
+                    transferFuture = api.transferToLobby(player);
+                }
+
                 transferFuture.thenAccept(success -> {
                     if (success) {
                         player.sendMessage(langManager.getMessage("shutdown.transfer_message"));
@@ -73,6 +84,7 @@ public class EventListener implements Listener {
                                         "player", player.getName(),
                                         "error", "API返回传送失败")
                         );
+                        // 传送失败，执行踢出
                         player.kick(langManager.getMessage("shutdown.kick_message"), false);
                     }
                 }).exceptionally(throwable -> {
@@ -81,6 +93,7 @@ public class EventListener implements Listener {
                                     "player", player.getName(),
                                     "error", throwable.getMessage())
                     );
+                    // 传送失败，执行踢出
                     player.kick(langManager.getMessage("shutdown.kick_message"), false);
                     return null;
                 });
@@ -90,6 +103,7 @@ public class EventListener implements Listener {
                                 "player", player.getName(),
                                 "error", e.getMessage())
                 );
+                // 传送失败，执行踢出
                 player.kick(langManager.getMessage("shutdown.kick_message"), false);
             }
         }
